@@ -43,7 +43,7 @@ class MainConfig extends React.Component {
 
         return (
             <div>
-                <Card title="Первичные данные">
+                <Card title="Форма обратной связи архива">
                     <Form>
                         <Form.Item label={"Вы являетесь:"}>
                             {getFieldDecorator('formOrganization')(<Radio.Group onChange={(e) => {
@@ -55,7 +55,7 @@ class MainConfig extends React.Component {
                             </Radio.Group>)}
                         </Form.Item>
                         {this.state.formOrganization === "Individual" &&
-                        <Form.Item label={"Выберете тип запроса:"}>
+                        <Form.Item label={"Выберите тип запроса:"}>
                             {getFieldDecorator('typeRequest')(<Radio.Group onChange={(e) => {
                                 this.setState({typeRequest: e.target.value, request: ""});
                                 this.props.setTypeReq(e.target.value);
@@ -74,6 +74,7 @@ class MainConfig extends React.Component {
                                 <Radio.Button value="workPeriod">Архивная справка о подтверждении периода
                                     работы</Radio.Button>
                                 <Radio.Button value="salaryCertificate">Справка о заработной плате</Radio.Button>
+                                <Radio.Button value="unclaimedWorkBook">Невостребованные трудовые книжки</Radio.Button>
                             </Radio.Group>)}
                         </Form.Item>}
                         {(this.state.formOrganization === "Individual" && this.state.typeRequest === "Study") &&
@@ -95,9 +96,8 @@ class MainConfig extends React.Component {
 
                     {(this.state.request === "salaryCertificate" || this.state.request === "duplicateDiploma" || this.state.request === "academicReference")
                     && <div>
-                        <h5>Архив не изготавливает справки данного вида!</h5>
-                        <p>Напишите заявление в свободной форме на имя ректора университета (Барышников С.О.) и
-                            обратитесь в <strong>общий отдел</strong>.</p>
+                        <h5>Архив справки данного вида не оформляет!</h5>
+                        <p>За информацией обратитесь в <strong>общий отдел</strong>.</p>
                         <p>Контакты общего отдела:</p>
                         <p><a href="tel:+7 (812) 748-96-92">+7 (812) 748-96-92</a></p>
                         <p><a href="mailto:otd_o@gumrf.ru">otd_o@gumrf.ru</a></p>

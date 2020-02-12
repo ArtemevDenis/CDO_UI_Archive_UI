@@ -20,6 +20,7 @@ class Study extends React.Component {
             cpAllDocs: this.props.cpAllDocs
         };
         this.setField = this.setField.bind(this);
+
         //    this.updateReturn = this.updateReturn.bind(this);
 
     }
@@ -58,6 +59,11 @@ class Study extends React.Component {
         if (value > now.getFullYear() || value < 1970)
             callback("Введите год окончания обучения")
     };
+    validatorTypeEdu = (rule, value, callback) => {
+        if (value !== "full-time" || value !== "correspondence" || value !== "part-time")
+            callback("Введите год окончания обучения")
+    };
+
 
     render() {
 
@@ -109,9 +115,9 @@ class Study extends React.Component {
                                           this.props.setOldFIO(e.target.value);
                                       }}/>)}
                         </Form.Item>
-                        <Form.Item label="Выберете дату рождения">
+                        <Form.Item label="Выберите дату рождения">
                             {getFieldDecorator('day_of_birthday', {
-                                rules: [{type: 'object', required: true, message: 'Выберете дату рождения!'}],
+                                rules: [{type: 'object', required: true, message: 'Выберите дату рождения!'}],
                             })(<DatePicker
                                 format="DD.MM.YYYY"
                                 placeholder={"06.12.1981"}
@@ -122,12 +128,12 @@ class Study extends React.Component {
                                     }
                                 }}/>)}
                         </Form.Item>
-                        <Form.Item label="Введите год окончания обучения">
+                        <Form.Item label="Выберите год завершения обучения">
                             {getFieldDecorator('date_end', {
                                 rules: [{
                                     len: 4,
                                     required: true,
-                                    message: 'Выберете год окончания обучения!',
+                                    message: 'Выберите год завершения обучения!',
                                     whitespace: true,
                                     validator: this.validatorYear
                                 }],
@@ -143,13 +149,14 @@ class Study extends React.Component {
                                       }}
                             />)}
                         </Form.Item>
-                        <Form.Item label="Завершене в связи с отчислением">
+                        {this.props.request !== "confDiploma" && <Form.Item label="Завершение в связи с отчислением?">
                             {getFieldDecorator('isExpelledSwitch', {valuePropName: "checked"})(<Switch
+                                checkedChildren="Да" unCheckedChildren="Нет"
                                 onChange={(e) => {
                                     this.setState({isExpelled: e});
                                     this.props.setIsExpelled(e);
                                 }}/>)}
-                        </Form.Item>
+                        </Form.Item>}
                         <Form.Item label="Форма обучения">
                             {getFieldDecorator('formTraining')
                             (<Select style={{width: 174}}
@@ -165,15 +172,11 @@ class Study extends React.Component {
                             </Select>)}
                         </Form.Item>
                         <Form.Item label="Факультет/Специальность">
-                            {getFieldDecorator('specialty', {
-                                rules: [
-                                    {required: true, message: 'Введите факультет или специальность'},
-                                ],
-                            })(<Input type="text" placeholder="ИБ"
-                                      onChange={(e) => {
-                                          this.setState({specialty: e.target.value});
-                                          this.props.setSpecialty(e.target.value);
-                                      }}/>)}
+                            {getFieldDecorator('specialty')(<Input type="text" placeholder="ИБ"
+                                                                   onChange={(e) => {
+                                                                       this.setState({specialty: e.target.value});
+                                                                       this.props.setSpecialty(e.target.value);
+                                                                   }}/>)}
                         </Form.Item>
                         <Form.Item label="E-mail">
                             {getFieldDecorator('email', {

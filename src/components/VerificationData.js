@@ -54,6 +54,8 @@ class VerificationData extends React.Component {
             return " : Архивная справка о подтверждении диплома";
         else if (this.props.request === "docPrivet")
             return " : Документ из личного дела";
+        else if (this.props.request === "unclaimedWorkBook")
+            return " : Невостребованные трудовые книжки";
         return "";
     }
 
@@ -64,7 +66,7 @@ class VerificationData extends React.Component {
             return "По электронной почте на адрес";
         else if (this.props.wayGet === "Personally")
             return "Лично";
-        else if (this.props.wayGet === "Сonfidant")
+        else if (this.props.wayGet === "Confidant")
             return "Через доверенное лицо";
         else if (this.props.wayGet === "Courier")
             return "Курьерская служба";

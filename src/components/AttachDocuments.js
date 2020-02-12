@@ -27,7 +27,7 @@ class AttachDocuments extends React.Component {
                         setFileList={this.props.addFileToDataForm}
                         nameField={"Запрос"} path={'/api/upload'}/>
                     : <div>
-                        {this.props.wayGet === "Сonfidant"
+                        {this.props.wayGet === "Confidant"
                         && <SimpleReactFileUpload
                             FIO={this.props.FIO}
                             type={"proxyDoc"}

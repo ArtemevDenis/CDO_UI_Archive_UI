@@ -35,10 +35,11 @@ class GeneralInformation extends React.Component {
                         <li>Запеканова Елена Сергеевна</li>
                     </ul>
                     {this.props.primarySettings !== false &&
-                    <div><p>Вы пожете напечатать бланк заявление и прислать его по почте</p>
+                    <div><p>Для заказа справок или документов заполните форму обратной связи архива или заявление.<br/>
+                        Заявление можно направить посредством электронной/почтовой связи<br/><strong>Срок исполнения запросов в течение 30 дней</strong>
+                    </p>
                         <p className="linkButton"><a
-                            href={"https://gumrf.ru/useruploads/files/pologeniya/blank_arch_doc_2019.docx"}>Печатный
-                            бланк</a></p>
+                            href={"http://wrk1.gumrf.ru/files/blank_arch_doc_2019.docx"}>Бланк заявления</a></p>
                         <br/>
                     </div>
                     }

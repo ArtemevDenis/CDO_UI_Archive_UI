@@ -115,9 +115,9 @@ class Work extends React.Component {
                                           this.props.setOldFIO(e.target.value);
                                       }}/>)}
                         </Form.Item>
-                        <Form.Item label="Выберете дату рождения">
+                        <Form.Item label="Выберите дату рождения">
                             {getFieldDecorator('day_of_birthday', {
-                                rules: [{type: 'object', required: true, message: 'Выберете дату рождения!'}],
+                                rules: [{type: 'object', required: true, message: 'Выберите дату рождения!'}],
                             })(<DatePicker
                                 format="DD.MM.YYYY"
                                 placeholder={"06.12.1981"}
@@ -128,12 +128,12 @@ class Work extends React.Component {
                                     }
                                 }}/>)}
                         </Form.Item>
-                        <Form.Item label="Выберете год увольнения">
+                        <Form.Item label="Выберите год увольнения">
                             {getFieldDecorator('date_end', {
                                 rules: [{
                                     len: 4,
                                     required: true,
-                                    message: 'Выберете год увольнения!',
+                                    message: 'Выберите год увольнения!',
                                     whitespace: true,
                                     validator: this.validatorYear
                                 }],

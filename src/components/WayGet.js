@@ -63,7 +63,7 @@ class WayGet extends React.Component {
                             {this.props.formOrganization !== "Entity" &&
                             <Radio.Button value="Personally">Лично</Radio.Button>}
                             {this.props.formOrganization !== "Entity" &&
-                            <Radio.Button value="Сonfidant">Доверенное лицо</Radio.Button>}
+                            <Radio.Button value="Confidant">Доверенное лицо</Radio.Button>}
                             {this.props.formOrganization !== "Entity" &&
                             <Radio.Button value="Email">По электронной почте</Radio.Button>}
                             {this.props.formOrganization === "Entity" &&

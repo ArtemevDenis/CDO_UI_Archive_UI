@@ -27,10 +27,10 @@ import EntityForm from "./components/Statements/Entity";
 const {Step} = Steps;
 const width = window.innerWidth;
 
-const sendData = new FormData();
-
 class App extends React.Component {
 
+
+    sendData;
 
     constructor(props) {
         super(props);
@@ -66,9 +66,8 @@ class App extends React.Component {
             email: null,
             phone: null,
             specialty: null,
-            formTraining: null,
             isExpelled: false,
-
+            formTraining: "full-time",
 
             studyStatus: false,
             workStatus: false,
@@ -126,11 +125,11 @@ class App extends React.Component {
         this.setState({phone});
     }
 
+    /*WayGet component*/
+
     setIsExpelled(isExpelled) {
         this.setState({isExpelled});
     }
-
-    /*WayGet component*/
 
     setSpecialty(specialty) {
         this.setState({specialty});
@@ -195,6 +194,7 @@ class App extends React.Component {
 
     addFileToDataForm(files, type) {
         // console.log("adding file at App");
+        this.setState({successfullyAttachStatus: files});
         switch (type) {
             case "inquiry":
                 this.setState({inquiryFile: files});
@@ -282,12 +282,12 @@ class App extends React.Component {
         //   console.log(this.state.FIO.replace(/\s/g, '_'));
         if (filesArray !== undefined)
             for (let i = 0; i < filesArray.length; i++) {
-                sendData.append('file', filesArray[i], type + "_" + this.state.FIO.replace(/\s/g, '_') + "" + filesArray[i].name.replace(/\s/g, ''));
+                this.sendData.append('file', filesArray[i], type + "_" + this.state.FIO.replace(/\s/g, '_') + "" + filesArray[i].name.replace(/\s/g, ''));
             }
     };
 
     sendDataFile = () => {
-        post("/api/upload", sendData).then((res) => {
+        post("/api/upload", this.sendData).then((res) => {
             this.sendDataJSON(res.data);
 
         }).catch(error => {
@@ -298,14 +298,24 @@ class App extends React.Component {
     };
 
     createDataFile = () => {
-        this.addToSendData(this.state.inquiryFile, "inquiryFile");
-        this.addToSendData(this.state.proxyDocFile, "proxyDocFile");
-        this.addToSendData(this.state.passportFile, "passportFile");
-        this.addToSendData(this.state.workbookFile, "workbookFile");
-        this.addToSendData(this.state.copyDiplomaFile, "copyDiplomaFile");
-        this.addToSendData(this.state.kinshipDocFile, "kinshipDocFile");
-        this.addToSendData(this.state.statementFile, "statementFile");
+        this.sendData = new FormData();
+        if (this.state.wayGet === "Confidant" && this.state.formOrganization !== "Entity")
+            this.addToSendData(this.state.proxyDocFile, "proxyDocFile");
 
+        if (this.state.formOrganization === "Entity") {
+            this.addToSendData(this.state.inquiryFile, "inquiryFile");
+        } else if (this.state.typeRequest === "Search") {
+            this.addToSendData(this.state.kinshipDocFile, "kinshipDocFile");
+            this.addToSendData(this.state.statementFile, "statementFile");
+        } else {
+            this.addToSendData(this.state.passportFile, "passportFile");
+            if (this.state.typeRequest === "Work") {
+                this.addToSendData(this.state.workbookFile, "workbookFile");
+            }
+            if (this.state.typeRequest === "Study") {
+                this.addToSendData(this.state.copyDiplomaFile, "copyDiplomaFile");
+            }
+        }
         this.sendDataFile();
     };
 
@@ -318,7 +328,7 @@ class App extends React.Component {
                     key: "study",
                     content: <StudyForm
                         typeRequest={this.state.typeRequest}
-
+                        request={this.state.request}
                         //общие параметры
                         FIO={this.state.FIO}
                         oldFIO={this.state.oldFIO}
@@ -513,6 +523,45 @@ class App extends React.Component {
         this.setState({current});
     }
 
+
+    statusConfidantAttach() {
+        if (this.state.wayGet === "Confidant" && this.state.proxyDocFile !== null && this.state.proxyDocFile !== undefined && this.state.proxyDocFile.length !== 0) {
+            console.log("Ok!");
+            return true;
+        }
+        return this.state.wayGet !== "Confidant";
+
+    }
+
+    statusAttachDocReturn() {
+        if (this.state.formOrganization === "Entity") {
+            if (this.state.inquiryFile !== null && this.state.inquiryFile !== undefined && this.state.inquiryFile.length !== 0) {
+                return true;
+            }
+        }
+        if (this.state.formOrganization === "Individual") {
+            console.log("Individual");
+            if (this.state.passportFile !== null && this.state.passportFile !== undefined && this.state.passportFile.length !== 0) {
+                if (this.state.typeRequest === "Work") {
+                    if (this.state.workbookFile !== null && this.state.workbookFile !== undefined && this.state.workbookFile.length !== 0 && this.statusConfidantAttach())
+                        return true;
+                } else if (this.state.typeRequest === "Study")
+                    if (this.state.copyDiplomaFile !== null && this.state.copyDiplomaFile !== undefined && this.state.copyDiplomaFile.length !== 0 && this.statusConfidantAttach())
+                        return true;
+            }
+        }
+
+
+        if (this.state.typeRequest === "Search") {
+            console.log("statusConfidantAttach", this.statusConfidantAttach());
+            if (this.state.kinshipDocFile !== null && this.state.kinshipDocFile !== undefined && this.state.kinshipDocFile.length !== 0 &&
+                this.state.statementFile !== null && this.state.statementFile !== undefined && this.state.statementFile.length !== 0 && this.statusConfidantAttach())
+                return true;
+        }
+
+        return false;
+    }
+
     statusEntityUpdateReturn() {
         return this.state.FIO !== null &&
             this.state.email !== null &&
@@ -554,7 +603,6 @@ class App extends React.Component {
             this.state.dateEnd !== null &&
             this.state.email !== null &&
             this.state.phone !== null &&
-            this.state.specialty !== null &&
             this.state.formTraining !== null &&
             this.state.isExpelled !== null
 
@@ -565,7 +613,6 @@ class App extends React.Component {
             this.state.dateEnd !== undefined &&
             this.state.email !== undefined &&
             this.state.phone !== undefined &&
-            this.state.specialty !== undefined &&
             this.state.formTraining !== undefined &&
             this.state.isExpelled !== undefined
 
@@ -576,7 +623,6 @@ class App extends React.Component {
             this.state.dateEnd !== "" &&
             this.state.email !== "" &&
             this.state.phone !== "" &&
-            this.state.specialty !== "" &&
             this.state.formTraining !== "" &&
             this.state.isExpelled !== "";
     }
@@ -642,7 +688,11 @@ class App extends React.Component {
             return !this.statusWayGetUpdateReturn();
         } else if (this.state.steps[this.state.current].key === "entity") {
             return !this.statusEntityUpdateReturn();
+        } else if (this.state.steps[this.state.current].key === "attach") {
+            return !this.statusAttachDocReturn();
         }
+
+
         return false;
     }
 
@@ -699,7 +749,13 @@ class App extends React.Component {
                                         {current === this.state.steps.length - 1
                                         && <Button disabled={!this.isDisableSend()}
                                                    type="primary"
-                                                   onClick={() => this.createDataFile()}>
+                                                   onClick={() => {
+                                                       console.log(this.state.successfullyAttachStatus);
+                                                       if (this.state.successfullyAttachStatus) {
+                                                           this.setState({successfullyAttachStatus: true});
+                                                           this.createDataFile()
+                                                       }
+                                                   }}>
                                             Отправить
                                         </Button>}
                                     </div>
