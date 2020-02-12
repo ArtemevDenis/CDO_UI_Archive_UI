@@ -8,8 +8,9 @@ class VerificationData extends React.Component {
         super(props);
         this.state = {
             acceptPersonalData: false,
-        }
-
+        };
+        this.props.setAcceptPersonalData(false);
+        this.props.setCorrectData(false);
     }
 
     curDate() {
@@ -125,7 +126,8 @@ class VerificationData extends React.Component {
                             </div>
                         </>}
                         {this.props.wayGet === "Email" && <>
-                            <div className={"col-md-4"} style={{textAlign: "right"}}>Данные будут отправлены на электронную
+                            <div className={"col-md-4"} style={{textAlign: "right"}}>Данные будут отправлены на
+                                электронную
                                 почту:
                             </div>
                             <div
@@ -139,7 +141,7 @@ class VerificationData extends React.Component {
                         </div>
                         <div className={"col-md-8"}><label className="containerCheckbox">
                             <input type="checkbox"
-                                   checked={this.state.lackOfComplaints}
+                                   checked={this.state.acceptPersonalData}
                                    onChange={(e) => {
                                        this.setState({acceptPersonalData: e.target.checked});
                                        this.props.setAcceptPersonalData(e.target.checked)
@@ -152,7 +154,7 @@ class VerificationData extends React.Component {
                         <div className={"col-md-8"} style={{paddingTop: 10 + "px", paddingBottom: 10 + "px"}}><label
                             className="containerCheckbox">
                             <input type="checkbox"
-                                   checked={this.state.lackOfComplaints}
+                                   checked={this.state.correctData}
                                    onChange={(e) => {
                                        this.setState({correctData: e.target.checked});
                                        this.props.setCorrectData(e.target.checked)
