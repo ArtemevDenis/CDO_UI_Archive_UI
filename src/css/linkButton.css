@@ -1,0 +1,19 @@
+.linkButton a:link, a:visited {
+    background-color: #1890ff;
+    color: white;
+    padding: 6px 20px;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    position: absolute;
+    margin: auto;
+}
+
+.linkButton a:hover {
+    background-color: #40a9ff;
+}
+
+.linkButton a:active {
+    background-color: #096dd9;
+}
